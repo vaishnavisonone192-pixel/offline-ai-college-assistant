@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f1ea">
+    <title>Studyroom | Offline AI College Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <section class="auth-screen" id="auth-screen">
+        <div class="auth-brand"><div class="brand-mark">S</div><div><strong>Studyroom</strong><span>Offline college assistant</span></div></div>
+        <div class="auth-layout">
+            <div class="auth-copy"><p class="eyebrow">Your private study desk</p><h1>Learn at your<br><em>own pace.</em></h1><p>Keep your questions, course material, and study history together in one private workspace powered by your local model.</p><div class="auth-feature"><span>✦</span><div><strong>Private by design</strong><small>Your account data stays in this local application.</small></div></div></div>
+            <div class="auth-card">
+                <div class="auth-tabs"><button class="auth-tab active" id="login-tab" type="button">Log in</button><button class="auth-tab" id="signup-tab" type="button">Create account</button></div>
+                <div class="auth-heading"><h2 id="auth-title">Welcome back</h2><p id="auth-subtitle">Continue your study session.</p></div>
+                <form id="login-form" class="auth-form"><label>Email address<input id="login-email" type="email" autocomplete="email" required placeholder="you@example.com"></label><label>Password<input id="login-password" type="password" autocomplete="current-password" required placeholder="Your password"></label><button class="auth-submit" type="submit">Log in <span>→</span></button></form>
+                <form id="signup-form" class="auth-form hidden"><label>Full name<input id="signup-name" type="text" autocomplete="name" required placeholder="Your name"></label><label>Email address<input id="signup-email" type="email" autocomplete="email" required placeholder="you@example.com"></label><label>Password<input id="signup-password" type="password" autocomplete="new-password" required minlength="8" placeholder="At least 8 characters"></label><button class="auth-submit" type="submit">Create account <span>→</span></button></form>
+                <p class="auth-error hidden" id="auth-error" role="alert"></p><p class="auth-footnote">Your account is stored in the local SQLite database.</p>
+            </div>
+        </div>
+    </section>
+    <div class="app-shell hidden" id="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <div class="brand"><div class="brand-mark">S</div><div><strong>Studyroom</strong><span>Offline assistant</span></div></div>
+            <button class="new-chat" id="new-chat" type="button"><span>+</span> New conversation</button>
+            <div class="sidebar-section"><div class="section-label">Recent history</div><div class="history-list" id="history-list"></div></div>
+            <div class="sidebar-bottom"><div class="offline-card"><span class="status-dot"></span><div><strong>Running locally</strong><small>Private on this device</small></div></div><div class="model-line"><span>Model</span><strong>llama3.2:3b</strong></div><div class="user-card"><div class="user-avatar" id="user-avatar">S</div><div class="user-details"><strong id="user-name">Student</strong><small id="user-email"></small></div><button id="logout-button" type="button" aria-label="Log out" title="Log out">↪</button></div></div>
+        </aside>
+        <main class="main-panel">
+            <header class="topbar"><button class="icon-button menu-button" id="menu-button" type="button" aria-label="Open navigation">☰</button><div class="breadcrumb"><span>Workspace</span><b>/</b><strong>Study assistant</strong></div><div class="topbar-actions"><span class="local-pill"><span class="status-dot"></span> Offline mode</span><button class="icon-button" id="clear-history" type="button" aria-label="Clear conversation">⌫</button></div></header>
+            <section class="content-wrap">
+                <div class="intro-row"><div><p class="eyebrow">Your private study desk</p><h1>What are you working<br><em>through today?</em></h1><p class="intro-copy">Ask questions, unpack difficult ideas, and learn from your own course material.</p></div><div class="date-note"><span class="sun-mark">☼</span><span>Everything stays<br>on your computer</span></div></div>
+                <div class="workspace-grid">
+                    <section class="chat-card"><div class="card-header"><div><span class="eyebrow">Conversation</span><h2>Study assistant</h2></div><span class="live-label"><span class="status-dot"></span> Ready</span></div><div class="messages" id="messages" aria-live="polite"></div><div class="composer-area"><div class="attachment-chip hidden" id="attachment-chip"><span>▧</span><span id="attachment-name"></span><button type="button" id="remove-attachment" aria-label="Remove document">×</button></div><form class="composer" id="chat-form"><textarea id="question" rows="1" placeholder="Ask anything about your studies..." aria-label="Your question"></textarea><div class="composer-tools"><label class="attach-button" for="pdf-input" title="Attach a PDF">＋ <span>Attach PDF</span></label><input id="pdf-input" type="file" accept="application/pdf,.pdf"><button class="voice-button" id="voice-button" type="button" aria-label="Start voice input" title="Speak your question"><span class="mic-icon" aria-hidden="true"></span></button><button class="send-button" type="submit" aria-label="Send question">↑</button></div></form><p class="composer-hint" id="composer-hint">Press <kbd>Enter</kbd> to send <span>•</span> <kbd>Shift + Enter</kbd> for a new line</p></div></section>
+                    <aside class="document-card"><div class="card-header"><div><span class="eyebrow">Reference material</span><h2>Your document</h2></div><span class="file-count" id="file-count">0 / 1</span></div><div class="drop-zone" id="drop-zone"><div class="upload-icon">↑</div><strong>Drop a PDF here</strong><span>or <label for="pdf-input">browse your files</label></span><small>PDF up to 16 MB</small></div><div class="document-status hidden" id="document-status"><div class="pdf-badge">PDF</div><div class="document-info"><strong id="document-title"></strong><span id="document-meta"></span></div><button type="button" id="remove-document" aria-label="Remove document">×</button></div><div class="document-tip"><span>✦</span><p>Upload lecture notes, a syllabus, or a research paper. Your questions will be answered using its content.</p></div></aside>
+                </div>
+                <footer><span>Studyroom is powered by your local Ollama model.</span><span>Nothing leaves this device.</span></footer>
+            </section>
+        </main>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
